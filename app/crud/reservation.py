@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.crud.base import CRUDBase
 from app.models.reservation import Reservation
 from sqlalchemy import and_, select
+from app.models import User
 
 # Новый класс должен быть унаследован от CRUDBase.
 
@@ -65,6 +66,17 @@ class CRUDReservation(CRUDBase):
         )
         reservations = reservations.scalars().all()
         return reservations
+
+    # Новый метод:
+    async def get_by_user(
+            self, session: AsyncSession, user: User
+    ):
+        reservations = await session.execute(
+            select(Reservation).where(
+                Reservation.user_id == user.id
+            )
+        )
+        return reservations.scalars().all()
 
 
 # Создаём объекта класса CRUDReservation.

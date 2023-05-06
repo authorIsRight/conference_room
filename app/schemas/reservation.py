@@ -1,6 +1,6 @@
 # app/schemas/reservation.py
 from datetime import datetime, timedelta
-
+from typing import Optional
 from pydantic import BaseModel, root_validator, validator, Extra, Field
 
 FROM_TIME = (
@@ -54,6 +54,8 @@ class ReservationCreate(ReservationUpdate):
 class ReservationDB(ReservationBase):
     id: int
     meetingroom_id: int
+    # Добавьте опциональное поле user_id.
+    user_id: Optional[int]
 
     class Config:
         orm_mode = True
